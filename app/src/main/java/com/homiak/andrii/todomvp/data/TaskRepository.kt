@@ -1,5 +1,6 @@
 package com.homiak.andrii.todomvp.data
 
+import android.os.Handler
 import java.util.*
 
 /**
@@ -7,9 +8,13 @@ import java.util.*
  */
 class TaskRepository: TaskDataSource
 {
-    override fun getTasks(): List<Task> {
+    override fun getTasks(callback: TaskDataSource.LoadTasksCallback) {
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.WEEK_OF_MONTH, 2)
-        return listOf(Task("TODO", "Create todo app", calendar.time))
+        val tasks = listOf(Task("TODO", "Create todo app", calendar.time))
+        val handler = Handler()
+        handler.postDelayed({
+            callback.onTasksLoaded(tasks)
+        }, 3000)
     }
 }

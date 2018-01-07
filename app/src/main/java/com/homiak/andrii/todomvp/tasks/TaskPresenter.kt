@@ -1,6 +1,7 @@
 package com.homiak.andrii.todomvp.tasks
 
 import com.homiak.andrii.todomvp.data.Task
+import com.homiak.andrii.todomvp.data.TaskDataSource
 import com.homiak.andrii.todomvp.data.TaskRepository
 
 /**
@@ -15,7 +16,10 @@ class TaskPresenter(private val taskRepository: TaskRepository, private val task
 
     override fun loadTasks() {
         tasks.clear()
-        tasks.addAll(taskRepository.getTasks())
-        tasksView.showTasks(tasks)
+        taskRepository.getTasks(object : TaskDataSource.LoadTasksCallback {
+            override fun onTasksLoaded(tasks: List<Task>) {
+                tasksView.showTasks(tasks)
+            }
+        })
     }
 }
