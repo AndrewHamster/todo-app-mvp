@@ -10,6 +10,10 @@
     <style name="TitleBold" parent="TextAppearance.AppCompat.Medium">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/tile_bold_size</item>
+        <item name="android:textSize">@dimen/text_title_bold_size</item>
+    </style>
+    <style name="Body" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@color/darker_gray</item>
+        <item name="android:textSize">@dimen/text_body_size</item>
     </style>
 </resources>
