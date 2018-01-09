@@ -11,10 +11,17 @@ class TasksActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tasks)
         val view = TasksFragment.newInstance()
+//        setSupportActionBar(toolbar)
+//        supportActionBar?.apply {
+//            setHomeButtonEnabled(true)
+//            setDisplayHomeAsUpEnabled(true)
+//            setTitle(R.string.title_task_detail)
+//        }
+
         supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, view)
                 .commit()
-        val presenter = TaskPresenter(TaskRepository(), view)
+        val presenter = TasksPresenter(TaskRepository.instance, view)
         view.setPresenter(presenter)
     }
 }

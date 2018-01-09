@@ -18,5 +18,6 @@ interface TaskDetailContract {
     {
         fun deleteTask()
         fun markAsCompleted()
+        fun loadTaskInfo()
     }
 }

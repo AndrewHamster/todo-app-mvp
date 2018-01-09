@@ -4,9 +4,12 @@ package com.homiak.andrii.todomvp.taskdetail
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.*
+import android.widget.TextView
 
 import com.homiak.andrii.todomvp.R
 import com.homiak.andrii.todomvp.data.Task
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 /**
@@ -16,7 +19,12 @@ import com.homiak.andrii.todomvp.data.Task
  */
 class TaskDetailFragment : Fragment(), TaskDetailContract.View {
     override fun showTaskInfo(task: Task) {
-
+        with(task)
+        {
+            titleTV.text = title
+            dueDateTV.text = SimpleDateFormat("yyyy, MM, dd", Locale.US).format(dueDate)
+            descTV.text = description
+        }
     }
 
     private lateinit var taskDetailPresenter: TaskDetailContract.Presenter
@@ -28,10 +36,17 @@ class TaskDetailFragment : Fragment(), TaskDetailContract.View {
         activity.finish()
     }
 
+    lateinit var titleTV: TextView
+    lateinit var dueDateTV: TextView
+    lateinit var descTV: TextView
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater!!.inflate(R.layout.fragment_task_detail, container, false)
+        titleTV = view.findViewById(R.id.taskTitle)
+        dueDateTV = view.findViewById(R.id.taskDueDate)
+        descTV = view.findViewById(R.id.taskDescription)
         setHasOptionsMenu(true)
         return view
     }

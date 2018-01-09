@@ -1,8 +1,8 @@
 package com.homiak.andrii.todomvp.tasks
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -12,13 +12,22 @@ import android.widget.TextView
 import android.widget.Toast
 import com.homiak.andrii.todomvp.R
 import com.homiak.andrii.todomvp.data.Task
+import com.homiak.andrii.todomvp.taskdetail.TaskDetailActivity
 
 class TasksFragment : Fragment(), TasksContract.View {
 
     private lateinit var tasksPresenter: TasksContract.Presenter
-
     private lateinit var tasksList: RecyclerView
-    private val tasksAdapter by lazy { TasksAdapter() }
+    private val tasksAdapter by lazy {
+        TasksAdapter(object : TaskActionListener {
+            override fun onTaskClick(task: Task) {
+                val intent = Intent(activity, TaskDetailActivity::class.java)
+                intent.putExtra(TaskDetailActivity.TASK_ID, task.id)
+                activity.startActivity(intent)
+            }
+        })
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_tasks, container, false)
@@ -53,13 +62,11 @@ class TasksFragment : Fragment(), TasksContract.View {
         }
     }
 
-    class TasksAdapter : RecyclerView.Adapter<TaskViewHolder>()
-    {
+    class TasksAdapter(val listener: TaskActionListener) : RecyclerView.Adapter<TaskViewHolder>() {
         private var tasks = mutableListOf<Task>()
-        fun pushTasks(newTasks: List<Task>)
-        {
+        fun pushTasks(newTasks: List<Task>) {
             //add diffutil
-            val result = DiffUtil.calculateDiff(object : DiffUtil.Callback(){
+/*            DiffUtil.calculateDiff(object : DiffUtil.Callback() {
                 override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                     return tasks[oldItemPosition].title == newTasks[newItemPosition].title
                 }
@@ -71,13 +78,14 @@ class TasksFragment : Fragment(), TasksContract.View {
                 override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                     return tasks[oldItemPosition].title == newTasks[newItemPosition].title
                             && tasks[oldItemPosition].description == newTasks[newItemPosition].description
-                            && tasks[oldItemPosition].due == newTasks[newItemPosition].due
+                            && tasks[oldItemPosition].dueDate == newTasks[newItemPosition].dueDate
                 }
-            })
+            }).dispatchUpdatesTo(this)*/
             tasks.clear()
             tasks.addAll(newTasks)
-            result.dispatchUpdatesTo(this)
+            notifyDataSetChanged()
         }
+
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): TaskViewHolder {
             val view = LayoutInflater.from(parent!!.context).inflate(R.layout.item_task, parent, false)
@@ -89,16 +97,21 @@ class TasksFragment : Fragment(), TasksContract.View {
         }
 
         override fun onBindViewHolder(holder: TaskViewHolder?, position: Int) {
-            with(tasks[position])
-            {
-                holder?.titleTV?.text = title
+            val task = tasks[position]
+            holder?.apply {
+                view.setOnClickListener { listener.onTaskClick(task) }
+                titleTV.text = task.title
             }
         }
     }
 
 
-    class TaskViewHolder(v : View) : RecyclerView.ViewHolder(v)
+    class TaskViewHolder(val view: View) : RecyclerView.ViewHolder(view)
     {
-        val titleTV : TextView by lazy { v.findViewById<TextView>(R.id.taskTitle) }
+        val titleTV: TextView = view.findViewById(R.id.taskTitle)
+    }
+
+    interface TaskActionListener {
+        fun onTaskClick(task: Task)
     }
 }
