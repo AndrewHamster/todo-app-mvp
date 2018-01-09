@@ -3,6 +3,7 @@ package com.homiak.andrii.todomvp.tasks
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -47,7 +48,6 @@ class TasksFragment : Fragment(), TasksContract.View {
 
     override fun showTasks(tasks: List<Task>) {
         tasksAdapter.pushTasks(tasks)
-        Toast.makeText(activity, "Loaded ${tasks.size} tasks!", Toast.LENGTH_LONG).show()
     }
 
     override fun onResume() {
@@ -66,7 +66,7 @@ class TasksFragment : Fragment(), TasksContract.View {
         private var tasks = mutableListOf<Task>()
         fun pushTasks(newTasks: List<Task>) {
             //add diffutil
-/*            DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
                 override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                     return tasks[oldItemPosition].title == newTasks[newItemPosition].title
                 }
@@ -80,10 +80,10 @@ class TasksFragment : Fragment(), TasksContract.View {
                             && tasks[oldItemPosition].description == newTasks[newItemPosition].description
                             && tasks[oldItemPosition].dueDate == newTasks[newItemPosition].dueDate
                 }
-            }).dispatchUpdatesTo(this)*/
+            })
             tasks.clear()
             tasks.addAll(newTasks)
-            notifyDataSetChanged()
+            result.dispatchUpdatesTo(this)
         }
 
 
