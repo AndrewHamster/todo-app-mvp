@@ -17,6 +17,20 @@ import com.homiak.andrii.todomvp.taskdetail.TaskDetailActivity
 
 class TasksFragment : Fragment(), TasksContract.View {
 
+    private var active = false
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        active = true
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onDestroyView() {
+        active = false
+        super.onDestroyView()
+    }
+
+    override fun isActive() = active
+
     private lateinit var tasksPresenter: TasksContract.Presenter
     private lateinit var tasksList: RecyclerView
     private val tasksAdapter by lazy {

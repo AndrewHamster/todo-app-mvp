@@ -13,7 +13,7 @@ class TaskDetailPresenter(val view: TaskDetailContract.View, private val reposit
     }
 
     override fun deleteTask() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        //todo
     }
 
     override fun markAsCompleted() {
@@ -24,7 +24,12 @@ class TaskDetailPresenter(val view: TaskDetailContract.View, private val reposit
         repository.getTask(id, object : TaskDataSource.LoadTaskCallback
         {
             override fun onTaskLoaded(task: Task) {
-                view.showTaskInfo(task)
+                if(view.isActive())
+                    view.showTaskInfo(task)
+            }
+
+            override fun onTaskNoFound() {
+                //todo
             }
         })
     }

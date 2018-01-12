@@ -1,6 +1,7 @@
 package com.homiak.andrii.todomvp.taskdetail
 
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.*
@@ -18,6 +19,21 @@ import java.util.*
  * create an instance of this fragment.
  */
 class TaskDetailFragment : Fragment(), TaskDetailContract.View {
+
+    private var active = false
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        active = true
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onDestroyView() {
+        active = false
+        super.onDestroyView()
+    }
+
+    override fun isActive() = isAdded
+
     override fun showTaskInfo(task: Task) {
         with(task)
         {
@@ -63,9 +79,14 @@ class TaskDetailFragment : Fragment(), TaskDetailContract.View {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onResume() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        retainInstance = true
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onAttach(context: Context?) {
         taskDetailPresenter.start()
-        super.onResume()
+        super.onAttach(context)
     }
 
     companion object {

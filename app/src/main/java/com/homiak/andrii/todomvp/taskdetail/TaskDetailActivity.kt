@@ -2,8 +2,8 @@ package com.homiak.andrii.todomvp.taskdetail
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.homiak.andrii.todomvp.Injection
 import com.homiak.andrii.todomvp.R
-import com.homiak.andrii.todomvp.data.TaskRepository
 
 class TaskDetailActivity : AppCompatActivity() {
 
@@ -17,7 +17,7 @@ class TaskDetailActivity : AppCompatActivity() {
                 .commit()
         if(intent.hasExtra(TASK_ID))
         {
-            presenter = TaskDetailPresenter(fragment, TaskRepository.instance, intent.getIntExtra(TASK_ID, 0))
+            presenter = TaskDetailPresenter(fragment, Injection.provideTaskRepository(this), intent.getIntExtra(TASK_ID, 0))
             fragment.setPresenter(presenter)
         }
     }

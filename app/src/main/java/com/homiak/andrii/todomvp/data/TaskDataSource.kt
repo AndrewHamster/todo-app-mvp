@@ -15,5 +15,7 @@ interface TaskDataSource {
 
     interface LoadTaskCallback{
         fun onTaskLoaded(task: Task)
+
+        fun onTaskNoFound()
     }
 }

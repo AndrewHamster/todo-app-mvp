@@ -5,4 +5,5 @@ package com.homiak.andrii.todomvp
  */
 interface BaseView<in T : BasePresenter> {
     fun setPresenter(presenter: T)
+    fun isActive(): Boolean
 }
