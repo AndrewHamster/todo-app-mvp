@@ -13,10 +13,12 @@ interface TasksContract
     {
         fun showTasksEmpty()
         fun showTasks(list: List<Task>)
+        fun showAddTaskUI()
     }
 
     interface Presenter : BasePresenter
     {
         fun loadTasks()
+        fun handleAddButtonClick()
     }
 }

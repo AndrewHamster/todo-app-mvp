@@ -14,10 +14,6 @@ import java.util.*
 @Entity(tableName = "tasks")
 @TypeConverters(DateTypeConverter::class)
 data class Task(
-        @PrimaryKey(autoGenerate = true)
-        @ColumnInfo(name = "_id", index = true)
-        var id: Int = 0,
-
         @ColumnInfo(name = "title")
         val title: String,
 
@@ -26,4 +22,9 @@ data class Task(
 
         @ColumnInfo(name = "due_date")
         val dueDate: Date)
+{
+        @PrimaryKey(autoGenerate = true)
+        @ColumnInfo(name = "_id", index = true)
+        var id: Int = 0
+}
 

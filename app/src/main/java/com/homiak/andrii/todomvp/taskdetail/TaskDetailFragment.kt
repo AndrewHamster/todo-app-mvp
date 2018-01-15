@@ -4,11 +4,13 @@ package com.homiak.andrii.todomvp.taskdetail
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.view.*
 import android.widget.TextView
 
 import com.homiak.andrii.todomvp.R
 import com.homiak.andrii.todomvp.data.Task
+import kotlinx.android.synthetic.main.toolbar.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -64,11 +66,19 @@ class TaskDetailFragment : Fragment(), TaskDetailContract.View {
         dueDateTV = view.findViewById(R.id.taskDueDate)
         descTV = view.findViewById(R.id.taskDescription)
         setHasOptionsMenu(true)
+        (activity as? AppCompatActivity)?.apply {
+            setSupportActionBar(view.toolbar)
+            supportActionBar?.apply {
+                title = getString(R.string.title_task_detail)
+                setHomeButtonEnabled(true)
+                setDisplayHomeAsUpEnabled(true)
+            }
+        }
         return view
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.task_detail_menu, menu)
+        inflater?.inflate(R.menu.task_detail, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

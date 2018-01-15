@@ -8,8 +8,22 @@ import com.homiak.andrii.todomvp.data.TaskDataSource
 /**
  * Created by Andre on 12-Jan-18.
  */
+@SuppressLint("StaticFieldLeak")
 class LocalTaskDataSource private constructor(private val taskDao: TaskDao): TaskDataSource
 {
+    override fun saveTask(task: Task, callback: TaskDataSource.SaveTaskCallback) {
+        object : AsyncParameterlessTask()
+        {
+            override fun doInBackground(vararg p0: Unit?) {
+                taskDao.saveTask(task)
+            }
+
+            override fun onPostExecute(result: Unit?) {
+                callback.onTaskSaved()
+            }
+        }.execute()
+    }
+
     companion object {
         private var INSTANCE: LocalTaskDataSource? = null
         fun getInstance(taskDao: TaskDao): LocalTaskDataSource
@@ -23,9 +37,8 @@ class LocalTaskDataSource private constructor(private val taskDao: TaskDao): Tas
     }
 
     //todo check out executors
-    @SuppressLint("StaticFieldLeak")
     override fun getTasks(callback: TaskDataSource.LoadTasksCallback) {
-        object : AsyncTask<Unit, Unit, Unit>()
+        object : AsyncParameterlessTask()
         {
             private lateinit var tasks: List<Task>
             override fun doInBackground(vararg p0: Unit?) {
@@ -40,9 +53,8 @@ class LocalTaskDataSource private constructor(private val taskDao: TaskDao): Tas
 
 
     //todo check out executors
-    @SuppressLint("StaticFieldLeak")
     override fun getTask(id: Int, callback: TaskDataSource.LoadTaskCallback) {
-        object : AsyncTask<Unit, Unit, Unit>()
+        object : AsyncParameterlessTask()
         {
             private var task: Task? = null
             override fun doInBackground(vararg p0: Unit?) {
@@ -57,4 +69,6 @@ class LocalTaskDataSource private constructor(private val taskDao: TaskDao): Tas
             }
         }.execute()
     }
+
+    private abstract class AsyncParameterlessTask : AsyncTask<Unit, Unit, Unit>()
 }

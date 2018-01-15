@@ -3,6 +3,7 @@ package com.homiak.andrii.todomvp.tasks
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -12,10 +13,18 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import com.homiak.andrii.todomvp.R
+import com.homiak.andrii.todomvp.addtask.AddTaskActivity
 import com.homiak.andrii.todomvp.data.Task
 import com.homiak.andrii.todomvp.taskdetail.TaskDetailActivity
+import kotlinx.android.synthetic.main.fragment_tasks.view.*
+import kotlinx.android.synthetic.main.toolbar.view.*
 
 class TasksFragment : Fragment(), TasksContract.View {
+
+    override fun showAddTaskUI() {
+        val intent = Intent(activity, AddTaskActivity::class.java)
+        startActivity(intent)
+    }
 
     private var active = false
 
@@ -46,9 +55,17 @@ class TasksFragment : Fragment(), TasksContract.View {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_tasks, container, false)
+        (activity as? AppCompatActivity)?.apply {
+            setSupportActionBar(view.toolbar)
+            supportActionBar?.title = getString(R.string.title_tasks)
+        }
+
         tasksList = view.findViewById(R.id.tasksList)
         tasksList.adapter = tasksAdapter
         tasksList.layoutManager = LinearLayoutManager(activity)
+        view.add_btn.setOnClickListener {
+            tasksPresenter.handleAddButtonClick()
+        }
         return view
     }
 
@@ -60,8 +77,8 @@ class TasksFragment : Fragment(), TasksContract.View {
         Toast.makeText(activity, "No tasks!", Toast.LENGTH_LONG).show()
     }
 
-    override fun showTasks(tasks: List<Task>) {
-        tasksAdapter.pushTasks(tasks)
+    override fun showTasks(list: List<Task>) {
+        tasksAdapter.pushTasks(list)
     }
 
     override fun onResume() {
@@ -70,10 +87,7 @@ class TasksFragment : Fragment(), TasksContract.View {
     }
 
     companion object {
-        fun newInstance(): TasksFragment {
-            val fragment = TasksFragment()
-            return fragment
-        }
+        fun newInstance(): TasksFragment = TasksFragment()
     }
 
     class TasksAdapter(val listener: TaskActionListener) : RecyclerView.Adapter<TaskViewHolder>() {

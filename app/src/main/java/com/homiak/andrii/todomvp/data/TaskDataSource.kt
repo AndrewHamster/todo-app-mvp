@@ -8,6 +8,7 @@ interface TaskDataSource {
 
     fun getTask(id: Int, callback: LoadTaskCallback)
 
+    fun saveTask(task: Task, callback: SaveTaskCallback)
 
     interface LoadTasksCallback{
         fun onTasksLoaded(tasks: List<Task>)
@@ -17,5 +18,11 @@ interface TaskDataSource {
         fun onTaskLoaded(task: Task)
 
         fun onTaskNoFound()
+    }
+
+    interface SaveTaskCallback{
+        fun onTaskSaved()
+
+        fun onError()
     }
 }

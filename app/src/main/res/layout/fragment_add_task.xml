@@ -1,0 +1,65 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/toolbar"/>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context="com.homiak.andrii.todomvp.addtask.AddTaskFragment">
+
+            <!-- TODO: Update blank fragment layout -->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/titleLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/titleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Title"
+                    android:inputType="textCapSentences"
+                    tools:text="Title" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/descLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:counterEnabled="true">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/descText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="top"
+                    android:hint="Write a short description (optional)"
+                    android:inputType="textMultiLine"
+                    android:maxLength="3000"
+                    android:minLines="5"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="false"
+                    tools:text="sdkjfhglkdhglkjsdhglkjhdlkgfjhsdklgjhsdlkjghklsdjhfgkljshdhklghsdljghksdjhgkjdlkgkjhsdkljfglksdjfkgjhdkfjghksdjhfgkjhdg4" />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
+
+</android.support.design.widget.CoordinatorLayout>

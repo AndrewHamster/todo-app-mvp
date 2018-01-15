@@ -8,6 +8,10 @@ import com.homiak.andrii.todomvp.data.sources.local.LocalTaskDataSource
 class TaskRepository private constructor(private val localTaskDataSource: TaskDataSource): TaskDataSource
 {
 
+    override fun saveTask(task: Task, callback: TaskDataSource.SaveTaskCallback) {
+        localTaskDataSource.saveTask(task, callback)
+    }
+
     override fun getTasks(callback: TaskDataSource.LoadTasksCallback) {
         localTaskDataSource.getTasks(callback)
     }
